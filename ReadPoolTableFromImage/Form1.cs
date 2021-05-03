@@ -46,17 +46,17 @@ namespace ReadPoolTableFromImage
         {
             if (analyzer == null)
                 return;
-
+            // prevent out of bound coordinates if picture is smaller than our picture box
             if (e.X > calculatedPictureBox.Image.Width || e.Y > calculatedPictureBox.Image.Height)
                 return;
 
             Color color = analyzer.GetColorAtCoordinate(e.Location);
             LabColor labColor = new LabColor(color);
-
+            // testing and sampling data under mouse cursor while over image.
             if (previousLabColor.HasValue)
             {
                 float delta = LabColor.FindDeltaE94(previousLabColor.Value, labColor);
-
+                // delta of 10 seems to produce good results in finding objects on the table
                 if (delta >= 10)
                 {
                     Console.WriteLine();
